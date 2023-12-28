@@ -1,0 +1,28 @@
+  .toolbarClassName {
+      border-radius: 10px;
+  }
+
+  .wrapperClassName {
+      border: 1px solid rgb(255, 254, 254);
+      padding: 1rem;
+  }
+
+  .editorClassName {
+      background-color: rgb(254, 251, 251);
+      border-radius: 10px;
+      padding: 1rem;
+      height: 50vh;
+  }
+
+  .editor{
+    display: flex;
+  }
+  .texteditor{
+    background-color: rgb(240, 228, 248);
+  }
+  .markdowneditor{
+    width: 70%;
+    height: 100vh;
+    background-color: rgb(249, 245, 254);
+ 
+  }
