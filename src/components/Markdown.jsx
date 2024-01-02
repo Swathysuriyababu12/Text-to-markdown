@@ -13,7 +13,7 @@ const Markdown = ({ markdownContent, textState }) => {
   };
   return (
     <div>
-      <button onClick={handleButtonClick}>Preview</button>
+      <button onClick={handleButtonClick} className="preview">Preview</button>
       <h2>Markdown Content:</h2>
       {console.log(markdownContent)}
       <pre>{markdownContent}</pre>

@@ -39,3 +39,19 @@
     color: #ff0000;
     /* Change color on hover */
 }
+
+.primary{
+    background-color: #ff0000;
+    color:white;
+    border-radius: 5px;
+    border:1px solid red
+}
+
+.preview{
+    background-color:blue;
+        color: white;
+        border-radius: 5px;
+        padding:5px;
+        border: 1px solid blue;
+    }
+}
