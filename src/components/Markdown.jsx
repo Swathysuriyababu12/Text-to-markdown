@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./markdown.css";
 
-const Markdown = ({ markdownContent, textState }) => {
+const Markdown = ({ markdownContent, textState, formattedText }) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleButtonClick = () => {
@@ -13,9 +13,10 @@ const Markdown = ({ markdownContent, textState }) => {
   };
   return (
     <div>
-      <button onClick={handleButtonClick} className="preview">Preview</button>
+      <button onClick={handleButtonClick} className="preview">
+        Preview
+      </button>
       <h2>Markdown Content:</h2>
-      {console.log(markdownContent)}
       <pre>{markdownContent}</pre>
 
       {isModalOpen && (
@@ -25,8 +26,8 @@ const Markdown = ({ markdownContent, textState }) => {
               <button className="primary"> close &times;</button>
             </span>
             <h2>Markdown Content in Readme</h2>
-            {console.log(textState)}
-            <pre>{textState}</pre>
+            {/* <pre>{formattedText}</pre> */}
+            <div dangerouslySetInnerHTML={{ __html: formattedText }} />
           </div>
         </div>
       )}

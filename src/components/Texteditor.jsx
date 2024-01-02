@@ -7,6 +7,7 @@ import Markdown from "./Markdown";
 
 import draftToMarkdown from "draftjs-to-markdown";
 import { convertToRaw } from "draft-js";
+import draftToHtml from "draftjs-to-html";
 
 const Texteditor = () => {
   const [editorState, setEditorState] = useState(() =>
@@ -14,19 +15,26 @@ const Texteditor = () => {
   );
   const [text, setText] = useState("");
   const [markdownContent, setMarkdownContent] = useState("");
+  const [formattedText, setFormattedText] = useState("");
 
   useEffect(() => {
     convertToMarkdownHandler();
+    updateFormattedText();
   }, [editorState]);
 
+  const updatePlainText = () => {
+    const currentPlainText = editorState.getCurrentContent().getPlainText();
+    setText(currentPlainText);
+  };
+  const updateFormattedText = () => {
+    const contentState = editorState.getCurrentContent();
+    const html = draftToHtml(convertToRaw(contentState)); // Use draftjs-to-html
+    setFormattedText(html); // Remove trailing newline
+  };
   const convertToMarkdownHandler = () => {
     const contentState = editorState.getCurrentContent();
-     const currentPlainText = editorState.getCurrentContent().getPlainText();
-     setText(currentPlainText);
- 
     const rawContentState = convertToRaw(contentState);
     const newmarkdownContent = draftToMarkdown(rawContentState);
-    console.log(newmarkdownContent);
     setMarkdownContent(newmarkdownContent);
   };
 
@@ -36,7 +44,11 @@ const Texteditor = () => {
         <h1>Text Editor</h1>
         <Editor
           initialEditorState={editorState}
-          onEditorStateChange={setEditorState}
+          onEditorStateChange={(newEditorState) => {
+            setEditorState(newEditorState);
+            updatePlainText(); // Update plain text whenever editor state changes
+            updateFormattedText();
+          }}
           toolbarClassName="toolbarClassName"
           wrapperClassName="wrapperClassName"
           editorClassName="editorClassName"
@@ -44,7 +56,11 @@ const Texteditor = () => {
         />
       </div>
       <div className="markdowneditor">
-        <Markdown markdownContent={markdownContent} textState={text} />
+        <Markdown
+          markdownContent={markdownContent}
+          textState={text}
+          formattedText={formattedText}
+        />
       </div>
     </div>
   );
