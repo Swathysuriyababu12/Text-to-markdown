@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import "./markdown.css";
 
-const Markdown = ({ markdownContent }) => {
+const Markdown = ({ markdownContent, textState }) => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
   return (
     <div>
-          <h2>Markdown Content:</h2>
-        {  console.log(markdownContent)}
+      <button onClick={handleButtonClick}>Preview</button>
+      <h2>Markdown Content:</h2>
+      {console.log(markdownContent)}
       <pre>{markdownContent}</pre>
+
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={handleCloseModal}>
+              <button className="primary"> close &times;</button>
+            </span>
+            <h2>Markdown Content in Readme</h2>
+            {console.log(textState)}
+            <pre>{textState}</pre>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

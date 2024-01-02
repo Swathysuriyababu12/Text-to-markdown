@@ -12,6 +12,7 @@ const Texteditor = () => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const [text, setText] = useState("");
   const [markdownContent, setMarkdownContent] = useState("");
 
   useEffect(() => {
@@ -20,6 +21,9 @@ const Texteditor = () => {
 
   const convertToMarkdownHandler = () => {
     const contentState = editorState.getCurrentContent();
+     const currentPlainText = editorState.getCurrentContent().getPlainText();
+     setText(currentPlainText);
+ 
     const rawContentState = convertToRaw(contentState);
     const newmarkdownContent = draftToMarkdown(rawContentState);
     console.log(newmarkdownContent);
@@ -40,7 +44,7 @@ const Texteditor = () => {
         />
       </div>
       <div className="markdowneditor">
-        <Markdown markdownContent={markdownContent} />
+        <Markdown markdownContent={markdownContent} textState={text} />
       </div>
     </div>
   );
