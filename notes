@@ -1,2 +1,10 @@
 https://learn-draftjs-now.vercel.app/dependencies
 https://www.npmjs.com/package/draftjs-to-markdown
+
+draft to markdown
+draft to plain text
+draft to html
+
+reverse-preview
+markdown to draft---<> were encoded with &lt it was decoded and given value
+draft to html

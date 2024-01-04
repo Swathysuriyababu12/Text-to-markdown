@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { EditorState } from "draft-js";
+import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./texteditor.css";
@@ -8,18 +8,22 @@ import Markdown from "./Markdown";
 import draftToMarkdown from "draftjs-to-markdown";
 import { convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import { markdownToDraft } from "markdown-draft-js";
+import { convertFromRaw } from "draft-js";
 
 const Texteditor = () => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  const [text, setText] = useState("");
   const [markdownContent, setMarkdownContent] = useState("");
+  const [marktotext, setMarktotext] = useState("");
+  const [text, setText] = useState("");
   const [formattedText, setFormattedText] = useState("");
 
   useEffect(() => {
     convertToMarkdownHandler();
     updateFormattedText();
+    updateMarkdownToDraft();
   }, [editorState]);
 
   const updatePlainText = () => {
@@ -35,9 +39,21 @@ const Texteditor = () => {
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
     const newmarkdownContent = draftToMarkdown(rawContentState);
+    console.log(newmarkdownContent);
     setMarkdownContent(newmarkdownContent);
   };
-
+  const updatedraftToHtml = (contentState) => {
+    const html = draftToHtml(convertToRaw(contentState)); // Use draftjs-to-html
+    return html;
+  };
+  const updateMarkdownToDraft = () => {
+    const rawData = markdownToDraft(markdownContent);
+    const contentState = convertFromRaw(rawData);
+    console.log(contentState);
+    const data = updatedraftToHtml(contentState);
+    console.log(data);
+    setMarktotext(data);
+  };
   return (
     <div className="editor">
       <div className="texteditor">
@@ -48,6 +64,7 @@ const Texteditor = () => {
             setEditorState(newEditorState);
             updatePlainText(); // Update plain text whenever editor state changes
             updateFormattedText();
+            updateMarkdownToDraft();
           }}
           toolbarClassName="toolbarClassName"
           wrapperClassName="wrapperClassName"
@@ -56,11 +73,7 @@ const Texteditor = () => {
         />
       </div>
       <div className="markdowneditor">
-        <Markdown
-          markdownContent={markdownContent}
-          textState={text}
-          formattedText={formattedText}
-        />
+        <Markdown markdownContent={markdownContent} marktotext={marktotext} />
       </div>
     </div>
   );

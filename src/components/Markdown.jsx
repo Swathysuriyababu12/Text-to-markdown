@@ -1,8 +1,22 @@
 import React, { useState } from "react";
 import "./markdown.css";
 
-const Markdown = ({ markdownContent, textState, formattedText }) => {
+const Markdown = ({
+  markdownContent,
+  marktotext,
+}) => {
   const [isModalOpen, setModalOpen] = useState(false);
+
+  // This dangerousDecodeEntities function creates a temporary textarea element,
+  //  sets its innerHTML to the encoded HTML string, and retrieves the decoded content from its value property.
+  // This way, the encoded entities are converted back to actual HTML tags for rendering.
+
+  const dangerousDecodeEntities = (htmlString) => {
+    const txt = document.createElement("textarea");
+    txt.innerHTML = htmlString;
+    return txt.value;
+  };
+  const decodedHtmlContent = dangerousDecodeEntities(marktotext);
 
   const handleButtonClick = () => {
     setModalOpen(true);
@@ -26,8 +40,8 @@ const Markdown = ({ markdownContent, textState, formattedText }) => {
               <button className="primary"> close &times;</button>
             </span>
             <h2>Markdown Content in Readme</h2>
-            {/* <pre>{formattedText}</pre> */}
-            <div dangerouslySetInnerHTML={{ __html: formattedText }} />
+            {/* use proper sanitising later */}
+            <div dangerouslySetInnerHTML={{ __html: decodedHtmlContent }} />
           </div>
         </div>
       )}
