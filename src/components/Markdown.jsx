@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./markdown.css";
 import DOMPurify from "dompurify";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { clearSomeState, addMark } from "../redux/features/markdownSlice";
 
 const Markdown = ({ markdownContent, marktotext }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error, success } = useSelector((state) => state.marks);
+
+  useEffect(() => {
+    if (error) {
+      toast.warn(error);
+      dispatch(clearSomeState());
+    }
+    if (success === true) {
+      toast.success("Saved Successfully");
+      dispatch(clearSomeState());
+      navigate("/dashboard");
+    }
+  });
 
   // This dangerousDecodeEntities function creates a temporary textarea element,
   //  sets its innerHTML to the encoded HTML string, and retrieves the decoded content from its value property.
@@ -24,18 +41,31 @@ const Markdown = ({ markdownContent, marktotext }) => {
     console.log(isModalOpen);
   };
 
-  const postDetails = () => {};
+  const postDetails = (values) => {
+    console.log(values)
+    dispatch(addMark(values));
+  };
 
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-
 
   return (
     <div>
       <button onClick={handleButtonClick} className="preview">
         Preview
       </button>
+      <span className="container">
+        <button
+          onClick={() =>
+            postDetails({markdownContent,sanitizedHtmlContent})
+          }
+          className="preview"
+        >
+          Save
+        </button>
+      </span>
+
       <h3>Markdown Content:</h3>
       <pre>{markdownContent}</pre>
       {console.log(isModalOpen)}
