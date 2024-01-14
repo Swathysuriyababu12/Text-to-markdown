@@ -9,12 +9,12 @@ import Markdown from "./components/Markdown";
 function App() {
   return (
     <div className="App">
-      {/* <Routes> */}
-        {/* <Route exact path="/" element={<LoginForm />} />
-        <Route path="/sign-up" element={<Register />} /> */}
-        {/* <Route path="/" element={<Texteditor/>}/> */}
-      {/* </Routes> */}
-      <Texteditor/>
+      <Routes>
+        <Route exact path="/" element={<LoginForm />} />
+        <Route path="/sign-up" element={<Register />} />
+        <Route path="/editor" element={<Texteditor/>}/>
+      </Routes>
+     
     </div>
   );
 }
