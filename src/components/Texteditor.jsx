@@ -55,8 +55,8 @@ const Texteditor = () => {
     setMarktotext(data);
   };
   return (
-    <div className="editor">
-      <div className="texteditor">
+    <div className="editor d-lg-flex">
+      <div className="texteditor flex-lg-grow-1">
         <h1>Text Editor</h1>
         <Editor
           initialEditorState={editorState}
@@ -72,7 +72,7 @@ const Texteditor = () => {
           placeholder="The message goes here..."
         />
       </div>
-      <div className="markdowneditor">
+      <div className="markdowneditor container-fluid flex-lg-grow-1">
         <Markdown markdownContent={markdownContent} marktotext={marktotext} />
       </div>
     </div>

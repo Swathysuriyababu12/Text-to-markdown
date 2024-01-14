@@ -14,14 +14,12 @@
       height: 50vh;
   }
 
-  .editor{
-    display: flex;
-  }
+ 
   .texteditor{
     background-color: rgb(240, 228, 248);
+    flex: 0 0 50%;
   }
   .markdowneditor{
-    width: 70%;
     height: 100vh;
     background-color: rgb(249, 245, 254);
  

@@ -1,5 +1,5 @@
 /* Add this to your CSS */
-.modal {
+.modals {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -12,7 +12,7 @@
     z-index: 1;
 }
 
-.modal-content {
+.modal-contents {
     background-color: #fff;
     padding: 20px;
     max-width: 80%;
@@ -32,6 +32,7 @@
     color: #333;
     background-color: transparent;
     border: none;
+   
 }
 
 /* Additional styling for better visibility of the close button */

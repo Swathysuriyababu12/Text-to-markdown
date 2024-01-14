@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./markdown.css";
+import DOMPurify from "dompurify";
+import { useEffect } from "react";
 
-const Markdown = ({
-  markdownContent,
-  marktotext,
-}) => {
+const Markdown = ({ markdownContent, marktotext }) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  
 
   // This dangerousDecodeEntities function creates a temporary textarea element,
   //  sets its innerHTML to the encoded HTML string, and retrieves the decoded content from its value property.
@@ -17,31 +17,38 @@ const Markdown = ({
     return txt.value;
   };
   const decodedHtmlContent = dangerousDecodeEntities(marktotext);
+  const sanitizedHtmlContent = DOMPurify.sanitize(decodedHtmlContent);
 
   const handleButtonClick = () => {
     setModalOpen(true);
+    console.log(isModalOpen);
   };
+
+  const postDetails = () => {};
 
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
+
   return (
     <div>
       <button onClick={handleButtonClick} className="preview">
         Preview
       </button>
-      <h2>Markdown Content:</h2>
+      <h3>Markdown Content:</h3>
       <pre>{markdownContent}</pre>
-
+      {console.log(isModalOpen)}
       {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className="modals container-fluid">
+          <div className="modal-contents container-fluid">
             <span className="close" onClick={handleCloseModal}>
               <button className="primary"> close &times;</button>
             </span>
-            <h2>Markdown Content in Readme</h2>
-            {/* use proper sanitising later */}
-            <div dangerouslySetInnerHTML={{ __html: decodedHtmlContent }} />
+            <h4>Markdown Content in Readme</h4>
+            <div
+              dangerouslySetInnerHTML={{ __html: sanitizedHtmlContent }}
+            ></div>
           </div>
         </div>
       )}

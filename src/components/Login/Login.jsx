@@ -1,18 +1,48 @@
 import React from "react";
-import { Link ,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSchema } from "../../validations/Validation";
+import { clearSomeState,login } from "../../redux/features/userSlice";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
 
-import { useFormik } from "formik";
-// import { useDispatch, useSelector } from "react-redux";
-// import { loginSchema } from "../schemas";
-// import { clearSomeState, login } from "../redux/features/UserSlice";
-import { toast } from "react-toastify";
 
 
-const login = () => {
+
+const initialValues = {
+  email: "",
+  password: "",
+};
+
+
+const loginForm = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+  const { error, success } = useSelector((state) => state.user);
+   useEffect(() => {
+     if (error) {
+       toast.warn(error);
+       dispatch(clearSomeState());
+     }
+     if (success === true) {
+       toast.success("Successful Login");
+       dispatch(clearSomeState());
+       navigate("/editor");
+     }
+   });
+  
+   const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+     useFormik({
+       initialValues,
+       validationSchema: loginSchema,
+       onSubmit: (values) => {
+         dispatch(login(values));
+       },
+     });
     return (
       <div className="container vh-100 d-flex justify-content-center align-items-center">
-        <form>
+        <form onSubmit={handleSubmit}>
           <h3 className="text-center">Sign In</h3>
           <div className="mb-3">
             <label>Email </label>
@@ -20,7 +50,14 @@ const login = () => {
               type="email"
               className="form-control"
               placeholder="Enter email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
+            {errors.email && touched ? (
+              <span className="error">{errors.email}</span>
+            ) : null}
           </div>
           <div className="mb-3">
             <label>Password</label>
@@ -28,31 +65,27 @@ const login = () => {
               type="password"
               className="form-control"
               placeholder="Enter password"
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
+            {errors.password && touched ? (
+              <span className="error">{errors.password}</span>
+            ) : null}
           </div>
-          <div className="mb-3">
-            <div className="custom-control custom-checkbox">
-              <input
-                type="checkbox"
-                className="custom-control-input"
-                id="customCheck1"
-              />
-              <label className="custom-control-label" htmlFor="customCheck1">
-                Remember me
-              </label>
+
+          <div className="btn">
+            <div className="container mb-3" >
+              <Link to="/sign-up">Dont have an account?</Link>
             </div>
-          </div>
-          <div className="d-grid mb-2">
             <button type="submit" className="btn btn-primary">
-              Submit
+              Login
             </button>
           </div>
-          <p className="text-right">Not a registered user?
-          <Link to="/Sign-up">Register</Link>
-          </p>
         </form>
       </div>
     );
 };
 
-export default login;
+export default loginForm;
